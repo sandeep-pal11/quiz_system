@@ -1,108 +1,109 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <title>Categories list</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Categories - Quiz Master</title>
 
-  <!-- Tailwind CSS & Bootstrap -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- Datatable CSS -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
 
-  <style>
-    body {
-      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    .card-hover:hover {
-      transform: translateY(-5px);
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-  </style>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
 </head>
 
-<body>
+<body class="bg-gray-50 font-[Outfit] text-gray-800 antialiased flex flex-col min-h-screen">
 
-  <!-- Navbar -->
-  <x-user-navbar></x-user-navbar>
+    <!-- Navbar -->
+    <x-user-navbar></x-user-navbar>
 
-  <!-- Page -->
-  <div class="flex flex-col min-h-screen items-center py-10 px-4">
+    <!-- Main Content -->
+    <div class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full" 
+         x-data="{ search: '' }">
 
-    @if(session('message-success'))
-    <div class="mb-6 bg-green-100 border-l-4 border-green-600 text-green-800 p-3 rounded shadow-md w-full max-w-md text-center">
-      <p class="font-semibold">{{ session('message-success') }}</p>
-    </div>
-    @endif
+        <div class="text-center mb-12">
+            <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">Explore Categories</h1>
+            <p class="text-gray-500 text-lg max-w-2xl mx-auto">Find the perfect topic to test your knowledge. Choose from our wide range of categories below.</p>
+        </div>
 
-    <h1 class="text-4xl md:text-5xl font-extrabold text-blue-800 drop-shadow-lg mb-10 text-center">
-      Check Your Skills
-    </h1>
+        <!-- Search & Filter Bar -->
+        <div class="mb-10 max-w-md mx-auto relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fa-solid fa-search text-gray-400"></i>
+            </div>
+            <input 
+                x-model="search"
+                type="text" 
+                class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm shadow-sm transition-all" 
+                placeholder="Search categories...">
+        </div>
 
+        <!-- Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach ($categories as $category)
+            <div x-show="'{{ strtolower($category->name) }}'.includes(search.toLowerCase())" 
+                 class="bg-white rounded-xl shadow-sm hover:shadow-xl border border-gray-100 p-6 transition-all duration-300 transform hover:-translate-y-1 group flex flex-col h-full">
+                
+                <div class="flex items-center justify-between mb-4">
+                     <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-2xl font-bold shadow-lg shadow-blue-500/30">
+                        {{ substr($category->name, 0, 1) }}
+                    </div>
+                    <span class="bg-gray-50 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full border border-gray-200">
+                        {{ $category->quizzes_count }} Quizzes
+                    </span>
+                </div>
 
+                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                    {{ $category->name }}
+                </h3>
+                
+                <p class="text-gray-500 text-sm mb-6 flex-grow">
+                    Browse all quizzes available under {{ $category->name }}.
+                </p>
 
-    <!-- Category List -->
-    <div class="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 card-hover mb-10">
-      <h2 class="text-2xl font-bold text-blue-600 text-center py-4 border-b border-gray-200 bg-blue-50">
-        Top Categories
-      </h2>
-
-      <div class="p-4">
-        <table id="catTable" class="table table-striped table-bordered w-100 text-center">
-          <thead class="bg-blue-100 text-gray-800 font-semibold">
-            <tr>
-              <th>S. No</th>
-              <th>Name</th>
-              <th>Quiz Count</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($categories as $key => $category)
-            <tr>
-              <td>{{ $key+1 }}</td>
-              <td>{{ $category->name }}</td>
-              <td>{{ $category->quizzes_count }}</td>
-              <td>
-                <a href="/user-quiz-list/{{ $category->id }}/{{ str_replace(' ', '-', $category->name) }}"
-                  class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full shadow-md transition">
-                  <i class="fa-solid fa-eye"></i>
-                </a>
-              </td>
-            </tr>
+                <div class="mt-auto">
+                    <a href="/user-quiz-list/{{ $category->id }}/{{ str_replace(' ', '-', $category->name) }}" 
+                       class="block w-full text-center py-2.5 bg-gray-50 text-gray-700 hover:bg-blue-600 hover:text-white rounded-lg font-medium transition-colors border border-gray-200 hover:border-transparent">
+                        View Quizzes
+                    </a>
+                </div>
+            </div>
             @endforeach
-          </tbody>
-        </table>
-      </div>
+        </div>
+
+        <!-- No Results State -->
+        <div x-show="search.length > 0 && $el.querySelectorAll('.grid > div[x-show=\'true\']').length === 0" 
+             x-effect="if (search.length > 0) $el.style.display = document.querySelectorAll('.grid > div').length > 0 && Array.from(document.querySelectorAll('.grid > div')).every(el => el.style.display === 'none') ? 'block' : 'none'"
+             class="hidden text-center py-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900">No categories found</h3>
+            <p class="text-gray-500">Try adjusting your search query.</p>
+        </div>
+
     </div>
-  </div>
 
-  <x-footer-user></x-footer-user>
-
-  <!-- jQuery + Datatable JS -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-  <script>
-    $(document).ready(function () {
-      $('#catTable').DataTable({
-        paging: true,
-        searching: true,
-        ordering: true
-      });
-    });
-  </script>
+    <x-footer-user></x-footer-user>
 
 </body>
 </html>

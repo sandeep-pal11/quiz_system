@@ -1,35 +1,44 @@
 <!-- Footer User Component -->
-<footer class="bg-blue-800 text-white mt-10">
-    <div class="container mx-auto px-6 py-6">
+<footer class="bg-gray-900 text-white mt-auto font-[Outfit]">
+    <div class="max-w-7xl mx-auto px-6 py-10">
 
         <!-- Top Links -->
-        <div class="flex flex-col md:flex-row justify-between items-center border-b border-blue-600 pb-4 gap-4">
+        <div class="flex flex-col md:flex-row justify-between items-center border-b border-gray-800 pb-8 gap-6">
             
             <!-- Brand Name -->
-            <h2 class="text-lg font-bold tracking-wide">QuizMaster</h2>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">Q</div>
+                <h2 class="text-xl font-bold tracking-wide text-white">QuizMaster</h2>
+            </div>
 
             <!-- Navigation Links -->
-            <div class="flex gap-6 text-sm">
-                <a href="/" class="hover:text-blue-300 transition">Home</a>
-                <a href="/about" class="hover:text-blue-300 transition">About</a>
-                <a href="/contact" class="hover:text-blue-300 transition">Contact</a>
+            <div class="flex gap-8 text-sm font-medium text-gray-400">
+                <a href="/" class="hover:text-white transition-colors">Home</a>
+                <a href="/about-us" class="hover:text-white transition-colors">About Us</a>
+                <a href="/contact-us" class="hover:text-white transition-colors">Contact Us</a>
+        
             </div>
 
             <!-- Social Icons -->
-            <div class="flex gap-4 text-lg">
-                <a href="#" class="hover:text-blue-300 transition"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="hover:text-blue-300 transition"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="hover:text-blue-300 transition"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="hover:text-blue-300 transition"><i class="fab fa-linkedin-in"></i></a>
+            <div class="flex gap-4">
+                <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white transition-all transform hover:-translate-y-1">
+                    <i class="fab fa-facebook-f text-sm"></i>
+                </a>
+                <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-sky-500 hover:text-white transition-all transform hover:-translate-y-1">
+                    <i class="fab fa-twitter text-sm"></i>
+                </a>
+                <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-pink-600 hover:text-white transition-all transform hover:-translate-y-1">
+                    <i class="fab fa-instagram text-sm"></i>
+                </a>
+                <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-700 hover:text-white transition-all transform hover:-translate-y-1">
+                    <i class="fab fa-linkedin-in text-sm"></i>
+                </a>
             </div>
         </div>
 
         <!-- Bottom Text -->
-        <div class="text-center text-sm mt-4 text-gray-300">
-            &copy; 2025 All Rights Reserved | Designed by <span class="text-white font-semibold">Sandeep Pal & Atul Patil</span>
+        <div class="text-center text-sm mt-8 text-gray-500">
+            &copy; {{ date('Y') }} QuizMaster. All Rights Reserved. <span class="hidden md:inline">|</span> Unlocking knowledge, one quiz at a time.
         </div>
     </div>
 </footer>
-
-<!-- FontAwesome Script -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>

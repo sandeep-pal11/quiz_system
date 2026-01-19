@@ -1,68 +1,85 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Forgot Password</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - Quiz Master</title>
 
-    <!-- Bootstrap & FontAwesome -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <style>
-      body {
-        background: linear-gradient(135deg, #89f7fe, #66a6ff);
-        font-family: 'Segoe UI', sans-serif;
-      }
-      .card {
-        border-radius: 1rem;
-        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
-      }
-      .btn-primary {
-        border-radius: 0.5rem;
-        font-weight: bold;
-      }
-    </style>
-  </head>
-  <body>
-    <section class="vh-100 d-flex align-items-center">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-6 col-lg-5">
-            <div class="card p-4">
-              <div class="card-body text-center">
-                <h3 class="mb-4 text-primary">Forgot Password</h3>
-                <p class="text-muted mb-4">Enter your registered email to reset your password</p>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
 
-                @if(session('status'))
-                  <div class="alert alert-success">{{ session('status') }}</div>
-                @endif
+<body class="bg-gray-50 font-[Outfit] text-gray-800 antialiased h-screen flex items-center justify-center p-4">
 
-                <form action="{{ url('/user-forgot-password') }}" method="POST">
-                  @csrf
-                  
-                  <div class="form-floating mb-3">
-                    <input type="email" 
-                           class="form-control @error('email') is-invalid @enderror" 
-                           id="email" 
-                           name="email" 
-                           placeholder="Enter your email">
-                    <label for="email"><i class="fas fa-envelope me-2"></i>Email address</label>
-                    @error('email')
-                      <div class="text-danger small text-start">{{ $message }}</div>
-                    @enderror
-                  </div>
-
-                  <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
-                  <a href="{{ url('/user-login') }}" class="d-block mt-3 text-decoration-none">← Back to Login</a>
-                </form>
-              </div>
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+        <div class="p-8 text-center">
+            
+            <div class="mb-6 inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 text-blue-600 text-3xl">
+                <i class="fa-solid fa-key"></i>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Forgot Password?</h2>
+            <p class="text-gray-500 mb-8 text-sm">
+                Enter your email address below and we'll help you get back into your account.
+            </p>
+
+            @if(session('status'))
+                <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 text-left">
+                    <p class="text-sm text-green-700 font-medium">
+                        <i class="fa-solid fa-check-circle mr-1"></i> {{ session('status') }}
+                    </p>
+                </div>
+            @endif
+
+            <form action="{{ url('/user-forgot-password') }}" method="POST" class="space-y-5 text-left" novalidate>
+                @csrf
+                
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <input type="text" id="email" name="email" placeholder="you@example.com"
+                            class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow @error('email') border-red-500 focus:ring-red-500 focus:border-red-500 @enderror">
+                    </div>
+                    @error('email')
+                        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <button type="submit" 
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                    Send Reset Link
+                </button>
+            </form>
+
+            <div class="mt-8 pt-6 border-t border-gray-100">
+                <a href="{{ url('/user-login') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Back to Login
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
 </html>

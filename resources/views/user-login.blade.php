@@ -1,118 +1,162 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>User Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Quiz Master</title>
 
-    <!-- Bootstrap & FontAwesome -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <style>
-      body {
-        background: linear-gradient(135deg, #74ebd5, #ACB6E5);
-        font-family: 'Segoe UI', sans-serif;
-      }
-      .card {
-        border-radius: 1rem;
-        box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
-      }
-      .form-control {
-        border-radius: 0.5rem;
-      }
-      .btn-primary {
-        border-radius: 0.5rem;
-        font-weight: bold;
-      }
-      .form-label {
-        font-weight: 500;
-      }
-      .form-check-label {
-        cursor: pointer;
-      }
-    </style>
-  </head>
-  <body>
-    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+</head>
+
+<body class="bg-gray-50 font-[Outfit] text-gray-800 antialiased h-screen flex flex-col">
+
     <!-- Navbar -->
     <x-user-navbar></x-user-navbar>
 
-    <!-- login-Up Section -->
-    <section class="vh-100 d-flex align-items-center">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-6 col-lg-5">
-            <div class="card p-4">
-              <div class="card-body text-center">
-                 @if(session('message-error'))
-  <div>
-    <p class="text-red-500 font-bold">{{session('message-error')}}</p>
-  </div>
-  @endif
-  @if(session('message-success'))
-  <div>
-    <p class="text-green-500 font-bold">{{session('message-success')}}</p>
-  </div>
-  @endif
-                <h3 class="mb-4">User Login</h3>
+    <div class="flex-grow flex items-center justify-center p-4">
+        <div class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row shadow-blue-900/10">
+            
+            <!-- Left Side: Image/Decoration -->
+            <div class="md:w-1/2 bg-blue-600 relative overflow-hidden flex flex-col justify-center items-center text-white p-12 text-center">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-700"></div>
+                <!-- Abstract Pattern -->
+                <div class="absolute inset-0 opacity-20">
+                     <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white" />
+                     </svg>
+                </div>
+                
+                <div class="relative z-10">
+                    <div class="mb-6 bg-white/20 backdrop-blur-lg p-4 rounded-2xl w-20 h-20 mx-auto flex items-center justify-center">
+                        <i class="fa-solid fa-right-to-bracket text-4xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-4">Welcome Back!</h2>
+                    <p class="text-blue-100 text-lg">
+                        Ready to test your knowledge? Login to access your personalized dashboard and continue your learning journey.
+                    </p>
+                </div>
+                <div class="relative z-10 mt-12 text-sm text-blue-200">
+                    Don't have an account? 
+                    <a href="/user-signup" class="text-white font-bold hover:underline ml-1">Sign Up</a>
+                </div>
+            </div>
 
-                {{-- Global Sign-Up Error --}}
-                @if ($errors->has('login_error'))
-                  <div class="alert alert-danger">
-                    {{ $errors->first('login_error') }}
-                  </div>
+            <!-- Right Side: Form -->
+            <div class="md:w-1/2 p-8 md:p-12 bg-white">
+                <div class="text-center md:text-left mb-8">
+                    <h3 class="text-2xl font-bold text-gray-900">Sign In</h3>
+                    <p class="text-gray-500 mt-1">Please enter your details to sign in.</p>
+                </div>
+
+                <!-- Messages -->
+                @if(session('message-error'))
+                <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 text-red-700 text-sm rounded-r-lg" role="alert">
+                    <p class="font-bold">Error</p>
+                    <p>{{ session('message-error') }}</p>
+                </div>
+                @endif
+                
+                @if(session('message-success'))
+                <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 text-green-700 text-sm rounded-r-lg" role="alert">
+                    <p class="font-bold">Success</p>
+                    <p>{{ session('message-success') }}</p>
+                </div>
                 @endif
 
-                <form action="{{ url('/user-login') }}" method="POST">
-                  @csrf
-                 {{-- Email --}}
-                  <div class="form-floating mb-3">
-                    <input type="email" 
-                           class="form-control @error('email') is-invalid @enderror" 
-                           id="email" 
-                           name="email" 
-                           placeholder="Enter email" 
-                           value="{{ old('email') }}">
-                    <label for="email"><i class="fas fa-envelope me-2"></i>Email</label>
-                    @error('email')
-                      <div class="text-danger text-start small">{{ $message }}</div>
-                    @enderror
-                  </div>
+                @if ($errors->has('login_error'))
+                <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 text-red-700 text-sm rounded-r-lg">
+                    {{ $errors->first('login_error') }}
+                </div>
+                @endif
 
-                  {{-- Password --}}
-                  <div class="form-floating mb-3">
-                    <input type="password" 
-                           class="form-control @error('password') is-invalid @enderror" 
-                           id="password" 
-                           name="password" 
-                           placeholder="Enter password">
-                    <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
-                    @error('password')
-                      <div class="text-danger text-start small">{{ $message }}</div>
-                    @enderror
-                  </div>
+                <form action="{{ url('/user-login') }}" method="POST" class="space-y-6" novalidate>
+                    @csrf
+                    
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <input type="text" name="email" id="email" 
+                                value="{{ old('email') }}"
+                                class="pl-10 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-gray-50 py-3 border @error('email') border-red-300 ring-red-200 @enderror transition-all" 
+                                placeholder="you@example.com">
+                        </div>
+                        @error('email')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                  {{-- Remember Me --}}
-                  <div class="form-check text-start mb-3">
-                    <input class="form-check-input" type="checkbox" id="rememberMe">
-                    <label class="form-check-label" for="rememberMe">Remember me</label>
-                  </div>
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <input type="password" name="password" id="password" 
+                                class="pl-10 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-gray-50 py-3 border @error('password') border-red-300 ring-red-200 @enderror transition-all" 
+                                placeholder="••••••••">
+                        </div>
+                        @error('password')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                  <button type="submit" class="btn btn-primary w-100">Login</button>
-                  <a href="{{ url('/user-forgot-password') }}" class="d-block mt-3">Forgot Password?</a>
+                    <!-- Options -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="rememberMe" name="remember" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="rememberMe" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                        </div>
+                        <div class="text-sm">
+                            <a href="{{ url('/user-forgot-password') }}" class="font-medium text-blue-600 hover:text-blue-500">
+                                Forgot password?
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div>
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all transform hover:-translate-y-0.5">
+                            Sign In
+                        </button>
+                    </div>
+
                 </form>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <x-footer-user></x-footer-user>
+    <!-- Simple Footer for Auth Pages -->
+    <div class="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
+        &copy; {{ date('Y') }} Quiz Master. All rights reserved.
+    </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+</body>
 </html>

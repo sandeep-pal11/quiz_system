@@ -8,9 +8,10 @@ Route::controller(AdminController::class)->group(function () {
     Route::view('admin-login', 'admin-login');
     Route::post('admin-login', 'login');
 
-       // 👇 yaha group bana ke middleware lagaya h
+       //  yaha group bana ke middleware lagaya h
     Route::middleware('CheckAdminAuth')->group(function(){
     Route::get('dashboard', 'dashboard');
+    Route::get('admin-users', 'users');
     Route::get('admin-categories', 'categories');
     Route::get('admin-logout', 'logout');
     Route::post('add-category', 'addcategory');
@@ -19,7 +20,24 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('add-mcq', 'addmcqs');
     Route::get('end-quiz', 'endquiz');
     Route::get('show-quiz/{id}/{quizName}', 'showquiz')->name('show.quiz');
-    Route::get('quiz-list/{id}/{category}', 'quizlist'); 
+    Route::get('quiz-list/{id}/{category}', 'quizlist');
+    
+    // Admin User Management Routes
+    Route::get('delete-user/{id}', 'deleteUser');
+    Route::get('toggle-user-status/{id}', 'toggleUserStatus');
+
+    // Fix: Add All Quizzes Route
+    Route::get('all-quizzes', function() {
+        $quizzes = \App\Models\Quiz::with('category')->get();
+        // Check for admin session first, as this is an admin route
+        if (session()->has('admin')) {
+             $email = session('admin')->admin_email;
+        } else {
+             $email = 'Admin'; 
+        }
+        return view('admin-all-quizzes', compact('quizzes', 'email'));
+    });
+
     });
 });
 
@@ -46,6 +64,10 @@ Route::controller(UserController::class)->group(function () {
     });
     //Route::view('/user-signup', 'user-signup');
     Route::post('/user-signup', 'usersignup');
+    Route::get('/quiz-result-details/{id}', 'quizresultdetails')->middleware('CheckUserAuth');
+    
+    Route::view('/about-us', 'about');
+    Route::view('/contact-us', 'contact-us');
 
     Route::get('/user-logout', 'userlogout');
     Route::get('/user-quiz-start', 'quizstart');
@@ -58,7 +80,7 @@ Route::controller(UserController::class)->group(function () {
     });
     //Route::view('/user-login', 'user-login');
     Route::post('/user-login', 'userlogin');
-   
+
     Route::get('/user-login-quiz', 'userloginquiz');
     Route::get('/user-quiz-search', 'searchquiz');
 

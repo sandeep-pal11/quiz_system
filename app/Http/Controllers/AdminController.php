@@ -40,8 +40,38 @@ class AdminController extends Controller
     {
         $admin = session::get('admin');
         if ($admin) {
-            $users=User::get();
-            return view('admin', ["email" => $admin->admin_email,'users'=>$users]);
+            $total_users = User::count();
+            $total_quizzes = Quiz::count();
+            $total_categories = category::count();
+            $total_mcqs = mcq::count();
+
+            // Prepare data for Chart
+            $categoryData = category::withCount('quizzes')->get();
+            $chartLabels = $categoryData->pluck('name')->toArray();
+            $chartValues = $categoryData->pluck('quizzes_count')->toArray();
+
+            return view('admin-dashboard', [
+                "email" => $admin->admin_email,
+                "total_users" => $total_users,
+                "total_quizzes" => $total_quizzes,
+                "total_categories" => $total_categories,
+                "total_mcqs" => $total_mcqs,
+                "chartLabels" => $chartLabels,
+                "chartValues" => $chartValues
+            ]);
+        } else {
+            return redirect('admin-login');
+        }
+    }
+
+    function users()
+    {
+        $admin = session::get('admin');
+        if ($admin) {
+            // Fetch all users except the current admin based on email
+            $adminEmail = trim($admin->admin_email); 
+            $users = User::where('email', '!=', $adminEmail)->get();
+            return view('admin-users', ["email" => $admin->admin_email, 'users' => $users]);
         } else {
             return redirect('admin-login');
         }
@@ -210,5 +240,37 @@ class AdminController extends Controller
         } else {
             return redirect('admin-login');
         }
+    }
+
+    public function deleteUser($id)
+    {
+        $admin = session::get('admin');
+        if (!$admin) return redirect('admin-login');
+
+        User::where('id', $id)->delete();
+        return redirect()->back()->with('success', 'User deleted successfully.');
+    }
+
+    public function toggleUserStatus($id)
+    {
+        $admin = session::get('admin');
+        if (!$admin) return redirect('admin-login');
+
+        $user = User::find($id);
+        if ($user) {
+            // Toggle logic: If user is active (2 or 1), make them inactive (0).
+            // If user is inactive (0), make them active (2 - verified).
+            // Assuming 2 is fully verified/active.
+            if ($user->active > 0) {
+                $user->active = 0;
+                $message = "User blocked successfully.";
+            } else {
+                $user->active = 2; 
+                $message = "User unblocked/activated successfully.";
+            }
+            $user->save();
+            return redirect()->back()->with('success', $message);
+        }
+        return redirect()->back()->withErrors(['error' => 'User not found.']);
     }
 }

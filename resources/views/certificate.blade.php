@@ -1,173 +1,119 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <title>Certificate of Completion</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Of Completion - Quiz Master</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
-  <!-- Tailwind CSS & Bootstrap -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <style>
-    body {
-      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
-      font-family: 'Poppins', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .certificate-box {
-      max-width: 850px;
-      margin: 80px auto;
-      background: #ffffff;
-      border: 5px solid #4f46e5;
-      border-radius: 16px;
-      padding: 60px 40px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-      position: relative;
-    }
-
-    .certificate-box:hover {
-      transform: translateY(-3px);
-      transition: 0.3s;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
-    }
-
-    .certificate-icon {
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 15px;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #1e3a8a;
-      margin-bottom: 10px;
-    }
-
-    .certificate-text {
-      color: #4b5563;
-      font-size: 1.2rem;
-      margin-top: 10px;
-    }
-
-    .student-name {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #312e81;
-      border-bottom: 2px solid #4f46e5;
-      display: inline-block;
-      padding: 5px 20px;
-      margin: 15px 0;
-    }
-
-    .quiz-title {
-      color: #1e40af;
-      font-size: 1.6rem;
-      font-weight: 600;
-    }
-
-    .date-text {
-      color: #374151;
-      font-size: 1rem;
-      margin-top: 20px;
-    }
-
-    /* Buttons */
-    .btn-custom,
-    .btn-back {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      border-radius: 8px;
-      padding: 10px 20px;
-      transition: 0.3s;
-    }
-
-    .btn-custom {
-      background-color: #16a34a;
-      color: white;
-    }
-
-    .btn-custom:hover {
-      background-color: #15803d;
-      transform: translateY(-2px);
-    }
-
-    .btn-back {
-      background-color: #2563eb;
-      color: white;
-    }
-
-    .btn-back:hover {
-      background-color: #1e40af;
-      transform: translateY(-2px);
-    }
-
-    .btn-container {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 40px;
-    }
-
-    @media print {
-      .no-print,
-      x-user-navbar,
-      x-footer-user {
-        display: none !important;
-      }
-
-      body {
-        background: none;
-        padding: 0;
-      }
-
-      .certificate-box {
-        box-shadow: none;
-        border: 3px solid #4f46e5;
-      }
-    }
-  </style>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        .certificate-border {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='24' ry='24' stroke='%23E5E7EB' stroke-width='4' stroke-dasharray='16%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+        }
+    </style>
 </head>
 
-<body>
+<body class="bg-gray-100 font-sans min-h-screen flex items-center justify-center p-4">
 
-  <!-- Certificate -->
-  <div class="certificate-box text-center">
-    <img src="https://img.icons8.com/?size=100&id=86716&format=png&color=000000" alt="Certificate Icon"
-      class="certificate-icon">
+    <!-- Certificate Container -->
+    <div class="bg-white p-2 shadow-2xl rounded-3xl w-full max-w-4xl relative overflow-hidden">
+        
+        <!-- Decorative Background -->
+        <div class="absolute top-0 left-0 w-32 h-32 bg-blue-100 rounded-br-full opacity-50"></div>
+        <div class="absolute bottom-0 right-0 w-32 h-32 bg-yellow-100 rounded-tl-full opacity-50"></div>
 
-    <h1>Certificate of Completion</h1>
-    <p class="certificate-text">This certifies that</p>
+        <div class="border-8 border-double border-gray-100 p-8 md:p-12 rounded-2xl relative z-10 text-center certificate-border">
+            
+            <!-- Logo / Seal -->
+            <div class="mb-8 animate-fade-in-down">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-700 text-white shadow-lg mx-auto mb-4">
+                    <!-- Changed User Requested Quiz Icon -->
+                    <i class="fa-solid fa-clipboard-question text-3xl"></i>
+                </div>
+                <!-- <h2 class="text-sm font-bold tracking-[0.2em] text-gray-500 uppercase">Quiz Master Certification</h2> -->
+            </div>
 
-    <h2 class="student-name">{{$data['name']}}</h2>
+            <!-- Title -->
+            <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-gray-900 font-bold mb-4 italic text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-900">
+                Certificate of Completion
+            </h1>
+            
+            <p class="text-lg text-gray-500 mb-8 font-light">This is to verify that</p>
 
-    <p class="certificate-text">has successfully completed the quiz</p>
-    <h3 class="quiz-title">{{$data['quiz']}}</h3>
+            <!-- Name -->
+            <div class="mb-8 relative inline-block">
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-800 px-8 py-2 border-b-2 border-blue-500 font-serif">
+                    {{$data['name']}}
+                </h2>
+                <div class="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-200"></div>
+            </div>
 
-    <p class="date-text">Awarded on <strong>{{ date('Y-m-d') }}</strong></p>
+            <!-- Achievement -->
+            <p class="text-lg text-gray-500 mb-2">has successfully completed the quiz</p>
+            <h3 class="text-2xl md:text-3xl font-bold text-blue-700 mb-8">{{$data['quiz']}}</h3>
 
-    <!-- Buttons -->
-    <div class="btn-container no-print">
-      <a href="#" class="btn-custom" onclick="window.print()">
-        <i class="fa-solid fa-download"></i> Download
-      </a>
-      <a href="/" class="btn-back">
-        <i class="fa-solid fa-arrow-left"></i> Back
-      </a>
+            <!-- Footer -->
+            <div class="flex flex-col md:flex-row justify-between items-center max-w-2xl mx-auto mt-12 gap-8">
+                <div class="text-center">
+                    <div class="text-lg font-bold text-gray-800 border-t border-gray-300 pt-2 px-8">
+                        {{ date('Y-m-d') }}
+                    </div>
+                    <div class="text-xs text-gray-400 uppercase tracking-wider mt-1">Date Awarded</div>
+                </div>
+
+                <div class="text-center">
+                     <div class="text-lg font-bold text-gray-800 border-t border-gray-300 pt-2 px-8 font-serif italic">
+                        QuizMaster Team
+                    </div>
+                    <div class="text-xs text-gray-400 uppercase tracking-wider mt-1">Authorized Signature</div>
+                </div>
+            </div>
+
+        </div>
     </div>
-  </div>
 
+    <!-- Controls (No Print) -->
+    <div class="fixed bottom-8 left-0 right-0 flex justify-center gap-4 no-print pointer-events-none">
+        <a href="/download-certificate" class="pointer-events-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all transform hover:-translate-y-1 flex items-center gap-2">
+            <i class="fa-solid fa-download"></i> Download / Print
+        </a>
+        <a href="/" class="pointer-events-auto bg-white hover:bg-gray-50 text-gray-700 font-bold py-3 px-6 rounded-full shadow-lg transition-all transform hover:-translate-y-1 flex items-center gap-2">
+            <i class="fa-solid fa-home"></i> Back Home
+        </a>
+    </div>
 
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { background-color: white; }
+            .shadow-2xl { box-shadow: none !important; }
+        }
+    </style>
 
 </body>
-
 </html>

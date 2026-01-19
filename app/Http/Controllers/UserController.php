@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Pagination\Paginator;
 use Spatie\Browsershot\Browsershot;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class UserController extends Controller
@@ -119,9 +120,14 @@ class UserController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        // yaha spelling sahi kar di hai
+        // Check password
         if (!$user || !Hash::check($request->password, $user->password)) {
             return redirect('user-login')->with('message-error', "Invalid credentials. Please try again!");
+        }
+
+        // Check if user is blocked
+        if ($user->active == 0) {
+            return redirect('user-login')->with('message-error', "Your account has been blocked by the admin.");
         }
 
         Session::put('user', $user);
@@ -150,7 +156,7 @@ class UserController extends Controller
 
     $record = new Record();
     $record->user_id = Session::get('user')->id;
-    $record->quiz_id = $firstMcq->quiz_id;  // ✅ FIXED
+    $record->quiz_id = $firstMcq->quiz_id;  //  FIXED
     $record->status  = 1;
 
     if ($record->save()) {
@@ -242,9 +248,45 @@ class UserController extends Controller
 
 
    public function userdetails() {
-    $quizrecord = Record::withQuiz()->where('user_id', Session::get('user')->id)->get();
+    $quizrecord = Record::withQuiz()
+        ->withCount(['mcq_records as total_questions'])
+        ->withCount(['mcq_records as correct_answers' => function ($query) {
+            $query->where('is_correct', 1);
+        }])
+        ->where('user_id', Session::get('user')->id)
+        ->orderBy('records.created_at', 'desc')
+        ->get();
+        
     return view('user-details',['quizrecord'=>$quizrecord]);
 }
+
+    public function quizresultdetails($recordId)
+    {
+        $userId = Session::get('user')->id;
+        
+        // Verify the record belongs to the logged-in user
+        $record = Record::where('id', $recordId)->where('user_id', $userId)->firstOrFail();
+        
+        // Fetch detailed results
+        $resultData = MCQ_Record::with('mcq') // Assuming you have an 'mcq' relationship in MCQ_Record model
+            ->where('record_id', $recordId)
+            ->get();
+
+        $quizName = Quiz::find($record->quiz_id)->name;
+
+        // Calculate score
+        $totalQuestions = $resultData->count();
+        $correctAnswers = $resultData->where('is_correct', 1)->count();
+        $score = ($totalQuestions > 0) ? round(($correctAnswers / $totalQuestions) * 100) : 0;
+
+        return view('user-quiz-result-details', [
+            'resultData' => $resultData,
+            'quizName' => $quizName,
+            'score' => $score,
+            'totalQuestions' => $totalQuestions,
+            'correctAnswers' => $correctAnswers
+        ]);
+    }
 
     function searchquiz(Request $request){
         $quizdata = Quiz::withCount('Mcq')-> where('name','Like','%'.$request->search.'%')->get();
@@ -288,8 +330,23 @@ class UserController extends Controller
    }
    function certificate(){
     $data=[];
-    $data['quiz'] = str_replace('-',' ',Session::get('currentquiz')['quizname']);
-    $data['name'] = Session::get('user')['name'];
-    return view('certificate',['data'=>$data]);
+    if(Session::has('currentquiz') && Session::has('user')){
+        $data['quiz'] = str_replace('-',' ',Session::get('currentquiz')['quizname']);
+        $data['name'] = Session::get('user')['name'];
+        return view('certificate',['data'=>$data]);
+    }
+    return redirect('/');
+   }
+
+    function downloadcertificate(){
+        $data=[];
+        if(Session::has('currentquiz') && Session::has('user')){
+            $data['quiz'] = str_replace('-',' ',Session::get('currentquiz')['quizname']);
+            $data['name'] = Session::get('user')['name'];
+            
+            $pdf = Pdf::loadView('certificate-pdf', ['data'=>$data]);
+            return $pdf->download('certificate.pdf');
+        }
+        return redirect('/');
    }
 }

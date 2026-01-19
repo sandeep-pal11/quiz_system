@@ -14,5 +14,9 @@ class Record extends Model
     function quiz(){
         return $this->belongsTo(quiz::class);
     }
+    
+    function mcq_records(){
+        return $this->hasMany(MCQ_Record::class);
+    }
 
 }

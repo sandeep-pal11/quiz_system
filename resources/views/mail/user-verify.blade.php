@@ -1,33 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <title>Verify Email</title>
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
-
-    <div class="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8 text-center border border-gray-200">
-        <div class="flex justify-center mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-600" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M16 12H8m8 0a4 4 0 11-8 0 4 4 0 018 0zm0 0v6m0-6a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
+<body style="font-family: Arial, sans-serif; background-color: #f3f4f6; margin: 0; padding: 0;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-top: 40px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+             <h2 style="color: #2563eb; font-size: 24px; font-weight: bold; margin: 0;">Quiz Master</h2>
         </div>
+        
+        <div style="padding: 20px; color: #374151; font-size: 16px; line-height: 1.5; text-align: center;">
+            <div style="margin-bottom: 20px;">
+                <img src="https://img.icons8.com/?size=100&id=63795&format=png&color=2563EB" alt="Verify Email" style="width: 64px; height: 64px;">
+            </div>
 
-        <h1 class="text-3xl font-bold text-blue-700 mb-3">Email Verification</h1>
-        <p class="text-gray-600 mb-6">Click the link below to verify your email:</p>
-
-        <a href="{{ $link }}" 
-           class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300">
-            Verify Email
-        </a>
-
-        <p class="mt-4 text-sm text-gray-500">Or copy the link below into your browser:</p>
-        <a href="{{ $link }}" class="text-blue-600 break-all hover:underline">{{ $link }}</a>
+            <h1 style="color: #1f2937; font-size: 24px; font-weight: bold; margin-bottom: 10px;">Verify your email address</h1>
+            <p>Thanks for signing up for Quiz Master! We're excited to have you on board.</p>
+            <p>Please confirm your email address to activate your account and start taking quizzes.</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="{{ $link }}" style="background-color: #2563eb; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 6px; font-weight: bold; display: inline-block;">Verify Email Address</a>
+            </div>
+            
+             <p style="font-size: 14px; color: #6b7280; margin-top: 30px;">Or copy and paste this link into your browser:<br> <a href="{{$link}}" style="color: #2563eb;">{{$link}}</a></p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #9ca3af; font-size: 12px;">
+            <p>&copy; {{ date('Y') }} Quiz Master. All rights reserved.</p>
+        </div>
     </div>
-
 </body>
 </html>
