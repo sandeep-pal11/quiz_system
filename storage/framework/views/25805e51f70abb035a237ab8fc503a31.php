@@ -96,7 +96,7 @@
                 </div>
                 <?php endif; ?>
 
-                <form action="<?php echo e(url('/user-signup')); ?>" method="POST" class="space-y-5">
+                <form action="<?php echo e(url('/user-signup')); ?>" method="POST" class="space-y-5" novalidate>
                     <?php echo csrf_field(); ?>
                     
                     <!-- Username -->
@@ -137,7 +137,7 @@ unset($__errorArgs, $__bag); ?>
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <input type="email" name="email" id="email" 
+                            <input type="text" name="email" id="email" 
                                 value="<?php echo e(old('email')); ?>"
                                 class="pl-10 block w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-gray-50 py-3 border <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

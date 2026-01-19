@@ -111,7 +111,7 @@
                 </div>
                 <?php endif; ?>
 
-                <form action="<?php echo e(url('/user-login')); ?>" method="POST" class="space-y-6">
+                <form action="<?php echo e(url('/user-login')); ?>" method="POST" class="space-y-6" novalidate>
                     <?php echo csrf_field(); ?>
                     
                     <!-- Email -->
@@ -121,7 +121,7 @@
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                                 <i class="fas fa-envelope"></i>
                             </div>
-                            <input type="email" name="email" id="email" 
+                            <input type="text" name="email" id="email" 
                                 value="<?php echo e(old('email')); ?>"
                                 class="pl-10 block w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm bg-gray-50 py-3 border <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
