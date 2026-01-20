@@ -187,7 +187,7 @@
                     <h3 class="text-lg font-bold text-gray-900">Quizzes per Category</h3>
                     <p class="text-sm text-gray-500">Distribution of quizzes across various categories.</p>
                 </div>
-                <div class="relative h-64 w-full">
+                <div class="relative h-96 w-full">
                     <canvas id="quizChart"></canvas>
                 </div>
             </div>
@@ -197,56 +197,114 @@
     </main>
 
     <script>
-        const ctx = document.getElementById('quizChart').getContext('2d');
-        const quizChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: <?php echo json_encode($chartLabels, 15, 512) ?>,
-                datasets: [{
-                    label: 'Number of Quizzes',
-                    data: <?php echo json_encode($chartValues, 15, 512) ?>,
-                    backgroundColor: [
-                        'rgba(59, 130, 246, 0.6)',
-                        'rgba(16, 185, 129, 0.6)',
-                        'rgba(245, 158, 11, 0.6)',
-                        'rgba(239, 68, 68, 0.6)',
-                        'rgba(139, 92, 246, 0.6)',
-                        'rgba(236, 72, 153, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgb(59, 130, 246)',
-                        'rgb(16, 185, 129)',
-                        'rgb(245, 158, 11)',
-                        'rgb(239, 68, 68)',
-                        'rgb(139, 92, 246)',
-                        'rgb(236, 72, 153)'
-                    ],
-                    borderWidth: 1,
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.05)'
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('quizChart').getContext('2d');
+            const rawLabels = <?php echo json_encode($chartLabels, 15, 512) ?>;
+            const dataValues = <?php echo json_encode($chartValues, 15, 512) ?>;
+
+            // Split long labels to multiple lines for better readability
+            const processedLabels = rawLabels.map(label => {
+                if (label.length > 15) {
+                    return label.split(' ');
+                }
+                return label;
+            });
+
+            // Generate dynamic beautiful colors
+            const generateColors = (count) => {
+                const colors = [];
+                const borders = [];
+                const hueStart = 200; // Blue-ish start
+                const step = 360 / (count || 1); 
+                
+                for(let i=0; i<count; i++) {
+                    const hue = (hueStart + (i * step)) % 360;
+                    colors.push(`hsla(${hue}, 85%, 65%, 0.6)`);
+                    borders.push(`hsla(${hue}, 85%, 55%, 1)`);
+                }
+                return { colors, borders };
+            };
+
+            const styles = generateColors(rawLabels.length);
+
+            const quizChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: processedLabels,
+                    datasets: [{
+                        label: 'Number of Quizzes',
+                        data: dataValues,
+                        backgroundColor: styles.colors,
+                        borderColor: styles.borders,
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        barPercentage: 0.6,
+                        hoverBackgroundColor: styles.colors.map(c => c.replace('0.6', '0.8'))
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            bottom: 10
                         }
                     },
-                    x: {
-                        grid: {
+                    plugins: {
+                        legend: {
                             display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14,
+                                family: "'Outfit', sans-serif"
+                            },
+                            bodyFont: {
+                                size: 13,
+                                family: "'Outfit', sans-serif"
+                            },
+                            displayColors: false,
+                            cornerRadius: 8
                         }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Outfit', sans-serif"
+                                },
+                                stepSize: 1,
+                                precision: 0
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Outfit', sans-serif",
+                                    size: 11
+                                },
+                                autoSkip: false,
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
                     }
                 }
-            }
+            });
         });
     </script>
 </body>
