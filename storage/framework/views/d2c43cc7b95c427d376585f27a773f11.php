@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -51,7 +51,7 @@
 <?php endif; ?>
 
     <main class="flex-grow">
-        
+
         <!-- Header -->
         <div class="bg-white border-b border-gray-200">
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 text-center">
@@ -64,7 +64,7 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                
+
                 <!-- Contact Info Section -->
                 <div class="space-y-8">
                     <div>
@@ -95,7 +95,7 @@
                             <div>
                                 <h4 class="text-lg font-bold text-gray-900">Email Us</h4>
                                 <p class="text-gray-600 mt-1">
-                                    <a href="mailto:support@quizmaster.com" class="hover:text-blue-600 transition">support@quizmaster.com</a>
+                                    <a href="mailto:support@quizmaster.com" class="hover:text-blue-600 transition">sandeeppal8471@gmail.com.com</a>
                                 </p>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                             <div>
                                 <h4 class="text-lg font-bold text-gray-900">Call Us</h4>
                                 <p class="text-gray-600 mt-1">
-                                    +91 98765 43210
+                                    +91 9664561379
                                 </p>
                             </div>
                         </div>
